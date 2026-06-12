@@ -1,5 +1,7 @@
 # slew
 
+[![CI](https://github.com/maisymylod/slew/actions/workflows/ci.yml/badge.svg)](https://github.com/maisymylod/slew/actions/workflows/ci.yml)
+
 A 3-DOF spacecraft attitude-control simulator in C++20. One rigid body, a
 quaternion-feedback controller, and a fixed-rate control loop that is
 deterministic by construction: the same configuration produces a bit-identical
