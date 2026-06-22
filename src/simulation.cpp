@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cmath>
 #include <thread>
+#include <utility>
 
 #include "slew/controller.hpp"
 
@@ -17,6 +18,30 @@ Quaternion default_slew_command(double degrees) {
   // A fixed off-axis rotation axis so the maneuver couples all three body axes.
   const Vec3 axis{0.4, 0.7, 0.5};
   return from_axis_angle(axis, degrees / kRadToDeg);
+}
+
+std::string validate_config(const SimConfig& config) {
+  auto positive = [](const char* name, double v) -> std::string {
+    if (!std::isfinite(v) || v <= 0.0) {
+      return std::string(name) + " must be a finite positive number";
+    }
+    return {};
+  };
+  const std::pair<const char*, double> required[] = {
+      {"rate-hz", config.rate_hz},     {"duration-s", config.duration_s},
+      {"inertia.x", config.inertia.x}, {"inertia.y", config.inertia.y},
+      {"inertia.z", config.inertia.z}, {"tau-max.x", config.tau_max.x},
+      {"tau-max.y", config.tau_max.y}, {"tau-max.z", config.tau_max.z},
+  };
+  for (const auto& [name, value] : required) {
+    if (std::string err = positive(name, value); !err.empty()) {
+      return err;
+    }
+  }
+  if (!std::isfinite(config.deadband_deg) || config.deadband_deg < 0.0) {
+    return "deadband-deg must be a finite non-negative number";
+  }
+  return {};
 }
 
 SimResult run(const SimConfig& config) {

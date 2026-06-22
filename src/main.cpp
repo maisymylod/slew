@@ -85,6 +85,11 @@ int main(int argc, char** argv) {
   cfg.realtime = has_flag(argc, argv, "--realtime");
   cfg.q_cmd = slew::default_slew_command(slew_deg);
 
+  if (std::string err = slew::validate_config(cfg); !err.empty()) {
+    std::cerr << "slew: invalid configuration: " << err << '\n';
+    return 2;
+  }
+
   const slew::SimResult r = slew::run(cfg);
 
   std::cout.setf(std::ios::fixed);
