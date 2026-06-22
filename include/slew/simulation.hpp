@@ -8,6 +8,7 @@
 #ifndef SLEW_SIMULATION_HPP
 #define SLEW_SIMULATION_HPP
 
+#include <string>
 #include <vector>
 
 #include "slew/quaternion.hpp"
@@ -53,6 +54,13 @@ struct SimResult {
   double jitter_max_us = 0.0;
   double jitter_p99_us = 0.0;
 };
+
+// Check a SimConfig for physically meaningful values before running. Returns an
+// empty string when the config is valid, otherwise a human-readable message
+// naming the first offending field. The simulation assumes positive rate,
+// duration, inertia, and torque limits; a non-positive or non-finite value
+// (e.g. from `--rate-hz -100`) otherwise produces silent garbage.
+std::string validate_config(const SimConfig& config);
 
 SimResult run(const SimConfig& config);
 
