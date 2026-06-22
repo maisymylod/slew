@@ -108,7 +108,9 @@ software. It models one rigid body with ideal sensing and actuation: no sensor
 noise, no actuator lag, no measurement delay, no flexible-body modes or fuel
 slosh, and no momentum-storage or desaturation dynamics. Inertia is diagonal and
 the PD gains are hand-tuned for the default body rather than derived for a
-specification. What it does get right is the rotational dynamics, the
+specification. The small-angle stability analysis behind the default gains, and
+how to re-tune them for a different inertia, are written up in
+[docs/CONTROL_LAW.md](docs/CONTROL_LAW.md). What it does get right is the rotational dynamics, the
 short-path quaternion control with a saturating actuator, and a control loop
 that is deterministic offline and measurable in real time. Those are the parts
 worth getting right first.
