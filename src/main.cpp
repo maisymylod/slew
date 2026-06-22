@@ -55,13 +55,7 @@ Vec3 parse_vec3(const std::string& s, const Vec3& fallback) {
 
 void write_csv(const std::string& path, const slew::SimResult& r) {
   std::ofstream out(path);
-  out << "t,qw,qx,qy,qz,wx,wy,wz,tau_x,tau_y,tau_z,error_deg\n";
-  for (const auto& s : r.trace) {
-    out << s.t << ',' << s.q.w << ',' << s.q.x << ',' << s.q.y << ',' << s.q.z
-        << ',' << s.omega.x << ',' << s.omega.y << ',' << s.omega.z << ','
-        << s.tau.x << ',' << s.tau.y << ',' << s.tau.z << ',' << s.error_deg
-        << '\n';
-  }
+  slew::write_csv(out, r);
 }
 
 }  // namespace

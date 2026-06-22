@@ -8,6 +8,7 @@
 #ifndef SLEW_SIMULATION_HPP
 #define SLEW_SIMULATION_HPP
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -63,6 +64,14 @@ struct SimResult {
 std::string validate_config(const SimConfig& config);
 
 SimResult run(const SimConfig& config);
+
+// The CSV column header written by write_csv(), in column order.
+extern const char* const kCsvHeader;
+
+// Write the telemetry trace as CSV (a header row followed by one row per
+// sample) to `out`. Backs the CLI's --csv option and is unit-testable against
+// any std::ostream.
+void write_csv(std::ostream& out, const SimResult& result);
 
 // Commanded attitude for a slew of `degrees` about a fixed, deliberately
 // off-axis vector (exercises all three control axes and the gyroscopic

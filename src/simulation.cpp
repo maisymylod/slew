@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <ostream>
 #include <thread>
 #include <utility>
 
@@ -13,6 +14,19 @@ namespace slew {
 namespace {
 constexpr double kRadToDeg = 57.29577951308232;
 }  // namespace
+
+const char* const kCsvHeader =
+    "t,qw,qx,qy,qz,wx,wy,wz,tau_x,tau_y,tau_z,error_deg";
+
+void write_csv(std::ostream& out, const SimResult& result) {
+  out << kCsvHeader << '\n';
+  for (const auto& s : result.trace) {
+    out << s.t << ',' << s.q.w << ',' << s.q.x << ',' << s.q.y << ',' << s.q.z
+        << ',' << s.omega.x << ',' << s.omega.y << ',' << s.omega.z << ','
+        << s.tau.x << ',' << s.tau.y << ',' << s.tau.z << ',' << s.error_deg
+        << '\n';
+  }
+}
 
 Quaternion default_slew_command(double degrees) {
   // A fixed off-axis rotation axis so the maneuver couples all three body axes.
